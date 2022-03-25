@@ -1,0 +1,21 @@
+server:
+  port: 9082
+
+spring:
+  application.name: order-processing-service
+  kafka:
+    consumer:
+      group-id: order-processing-service-group
+      client-id: order-processing-service-client
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      enable-auto-commit: false
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: 'com.mikemybytes.*'
+        spring.json.value.type.method: "com.mikemybytes.kafka.orderprocessing.MessageTypeResolver.resolve"
+        isolation.level: read_committed
+    listener:
+      ack-mode: record
+    bootstrap-servers: localhost:9092

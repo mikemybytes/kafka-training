@@ -1,0 +1,16 @@
+server:
+  port: 9081
+
+spring:
+  application.name: shopping-cart
+  kafka:
+#    listener:
+#      ack-mode: record
+    producer:
+      client-id: shopping-cart-service-client
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: tx-shopping-cart-service-
+      properties:
+        spring.json.type.mapping: "CartOrdered:com.mikemybytes.kafka.shopping.cart.CartOrderedEvent"
+    bootstrap-servers: localhost:9092
