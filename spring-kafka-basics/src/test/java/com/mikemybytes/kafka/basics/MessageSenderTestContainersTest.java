@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
 public class MessageSenderTestContainersTest {
 
     @Container
-    private static final KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.1"));
+    private static final KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.2.0"));
 
     @DynamicPropertySource
     static void springKafkaProperties(DynamicPropertyRegistry registry) {

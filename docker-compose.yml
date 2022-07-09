@@ -1,20 +1,22 @@
 version: "3"
 services:
 
-  # Note: Usually, you'd probably want to use the official Confluent images as described here:
-  # https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html#step-1-download-and-start-cp
-  # However, if you're running on the Apple Silicon, they could fail due to lacking the arm64 architecture support.
-  # Unofficial images from wurstmeister seem to be the most "widely compatible" at the moment.
+#  Inspired by Confluent Platform All-In-One: https://raw.githubusercontent.com/confluentinc/cp-all-in-one/7.2.0-post/cp-all-in-one/docker-compose.yml
+#  (which is probably the most complete Docker Compose "Kafka setup" you can find - Confluent Platform)
 
   zookeeper:
-    image: 'wurstmeister/zookeeper:latest'
+    image: 'confluentinc/cp-zookeeper:7.2.0'
+    hostname: zookeeper
+    container_name: zookeeper
     ports:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
 
   kafka:
-    image: 'wurstmeister/kafka:latest'
+    image: 'confluentinc/cp-kafka:7.2.0'
     ports:
       - '9092:9092'
     environment:
@@ -23,5 +25,11 @@ services:
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+      - KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
     depends_on:
       - zookeeper
