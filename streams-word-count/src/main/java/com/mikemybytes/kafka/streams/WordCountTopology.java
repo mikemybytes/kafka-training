@@ -23,6 +23,11 @@ class WordCountTopology {
     }
 
     @Bean
+    NewTopic wordsCounted() {
+        return TopicBuilder.name(WORDS_COUNTED_TOPIC).partitions(3).build();
+    }
+
+    @Bean
     KStream<String, String> wordCountStream(StreamsBuilder builder) {
         KStream<String, String> textLinesStream = builder.stream(TEXT_LINES_TOPIC);
         KTable<String, Long> wordCounts = textLinesStream

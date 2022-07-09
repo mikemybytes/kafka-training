@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.kafka.support.serializer.JsonTypeResolver;
 
+@SuppressWarnings("unused")
 public class MessageTypeResolver implements JsonTypeResolver {
 
   public JavaType resolveType(String topic, byte[] data, Headers headers) {
